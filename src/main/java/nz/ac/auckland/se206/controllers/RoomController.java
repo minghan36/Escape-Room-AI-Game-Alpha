@@ -3,7 +3,6 @@ package nz.ac.auckland.se206.controllers;
 import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -20,7 +19,6 @@ public class RoomController {
   @FXML private Rectangle rectangleRed;
   @FXML private Rectangle rectangleGreen;
   @FXML private Rectangle rectangleBlue;
-  @FXML private Label labelTimer;
   @FXML private Label labelPasscode;
 
   /** Initializes the room view, it is called when the room loads. */
@@ -79,7 +77,7 @@ public class RoomController {
       return;
     }
 
-    if (!GameState.isKeyFound) {
+    if (!GameState.isNoteFound) {
       showDialog(
           "Info", "Find the missing item!", "You resolved the riddle, now you know where the item is.");
     } else {
@@ -95,9 +93,9 @@ public class RoomController {
   @FXML
   public void clickPillow(MouseEvent event) {
     System.out.println("vase clicked");
-    if (GameState.isRiddleResolved && !GameState.isKeyFound) {
+    if (GameState.isRiddleResolved && !GameState.isNoteFound) {
       showDialog("Info", "Key Found", "You found a note under the pillow!");
-      GameState.isKeyFound = true;
+      GameState.isNoteFound = true;
     }
   }
 
@@ -108,17 +106,17 @@ public class RoomController {
   }
 
   @FXML
-  public void clickRed(){
+  public void clickRed(MouseEvent event){
     System.out.println("Red");
   }
 
   @FXML
-  public void clickGreen(){
+  public void clickGreen(MouseEvent event){
     System.out.println("Green");
   }
 
   @FXML
-  public void clickBlue(){
+  public void clickBlue(MouseEvent event){
     System.out.println("Blue");
   }
 }

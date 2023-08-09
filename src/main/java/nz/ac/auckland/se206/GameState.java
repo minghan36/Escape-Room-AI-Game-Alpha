@@ -7,5 +7,5 @@ public class GameState {
   public static boolean isRiddleResolved = false;
 
   /** Indicates whether the key has been found. */
-  public static boolean isKeyFound = false;
+  public static boolean isNoteFound = false;
 }
