@@ -1,12 +1,18 @@
 package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameState;
 
@@ -20,6 +26,9 @@ public class RoomController {
   @FXML private Rectangle rectangleGreen;
   @FXML private Rectangle rectangleBlue;
   @FXML private Label labelPasscode;
+  @FXML private Label labelTimer;
+  private static int minutes = 2;
+  private static int seconds = 0;
 
   /** Initializes the room view, it is called when the room loads. */
   public void initialize() {
@@ -79,7 +88,9 @@ public class RoomController {
 
     if (!GameState.isNoteFound) {
       showDialog(
-          "Info", "Find the missing item!", "You resolved the riddle, now you know where the item is.");
+          "Info",
+          "Find the missing item!",
+          "You resolved the riddle, now you know where the item is.");
     } else {
       showDialog("Info", "You Won!", "Good Job!");
     }
@@ -100,23 +111,56 @@ public class RoomController {
   }
 
   @FXML
-  public void clickWindow(MouseEvent event){
+  public void clickWindow(MouseEvent event) {
     System.out.println("Window Clicked");
     showDialog("Info", "Window", "Isn't it beautiful!");
   }
 
   @FXML
-  public void clickRed(MouseEvent event){
+  public void clickRed(MouseEvent event) {
     System.out.println("Red");
   }
 
   @FXML
-  public void clickGreen(MouseEvent event){
+  public void clickGreen(MouseEvent event) {
     System.out.println("Green");
   }
 
   @FXML
-  public void clickBlue(MouseEvent event){
+  public void clickBlue(MouseEvent event) {
     System.out.println("Blue");
+  }
+
+  @FXML
+  public void updateTimerLabel() {
+    labelTimer.setText(String.valueOf(minutes) + ":" + String.valueOf(seconds));
+  }
+
+  public void startTimer() {
+    Timeline timeline =
+        new Timeline(
+            new KeyFrame(
+                Duration.seconds(1),
+                new EventHandler<ActionEvent>() {
+                  @Override
+                  public void handle(ActionEvent event) {
+                    if (seconds == 0) {
+                      minutes--;
+                      seconds = 59;
+                    } else if (seconds > 0) {
+                      seconds--;
+                    }
+                    Platform.runLater(
+                        new Runnable() {
+                          @Override
+                          public void run() {
+                            updateTimerLabel();
+                          }
+                        });
+                  }
+                }));
+
+    timeline.setCycleCount(120);
+    timeline.play();
   }
 }
