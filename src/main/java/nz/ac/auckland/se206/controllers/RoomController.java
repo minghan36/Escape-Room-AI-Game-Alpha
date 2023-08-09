@@ -3,6 +3,8 @@ package nz.ac.auckland.se206.controllers;
 import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
@@ -12,9 +14,14 @@ import nz.ac.auckland.se206.GameState;
 /** Controller class for the room view. */
 public class RoomController {
 
-  @FXML private Rectangle door;
-  @FXML private Rectangle window;
-  @FXML private Rectangle vase;
+  @FXML private Rectangle rectangleDoor;
+  @FXML private Rectangle rectanglePillow;
+  @FXML private Rectangle rectangleWindow;
+  @FXML private Button buttonRed;
+  @FXML private Button buttonGreen;
+  @FXML private Button buttonBlue;
+  @FXML private Label labelTimer;
+  @FXML private Label labelPasscode;
 
   /** Initializes the room view, it is called when the room loads. */
   public void initialize() {
@@ -74,7 +81,7 @@ public class RoomController {
 
     if (!GameState.isKeyFound) {
       showDialog(
-          "Info", "Find the key!", "You resolved the riddle, now you know where the key is.");
+          "Info", "Find the missing item!", "You resolved the riddle, now you know where the item is.");
     } else {
       showDialog("Info", "You Won!", "Good Job!");
     }
@@ -86,21 +93,32 @@ public class RoomController {
    * @param event the mouse event
    */
   @FXML
-  public void clickVase(MouseEvent event) {
+  public void clickPillow(MouseEvent event) {
     System.out.println("vase clicked");
     if (GameState.isRiddleResolved && !GameState.isKeyFound) {
-      showDialog("Info", "Key Found", "You found a key under the vase!");
+      showDialog("Info", "Key Found", "You found a note under the pillow!");
       GameState.isKeyFound = true;
     }
   }
 
-  /**
-   * Handles the click event on the window.
-   *
-   * @param event the mouse event
-   */
   @FXML
-  public void clickWindow(MouseEvent event) {
-    System.out.println("window clicked");
+  public void clickWindow(MouseEvent event){
+    System.out.println("Window Clicked");
+    showDialog("Info", "Window", "Isn't it beautiful!");
+  }
+
+  @FXML
+  public void pressRed(){
+    System.out.println("Red");
+  }
+
+  @FXML
+  public void pressGreen(){
+    System.out.println("Green");
+  }
+
+  @FXML
+  public void pressBlue(){
+    System.out.println("Blue");
   }
 }
