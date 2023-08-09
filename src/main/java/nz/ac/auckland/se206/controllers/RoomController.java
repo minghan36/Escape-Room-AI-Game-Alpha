@@ -17,9 +17,9 @@ public class RoomController {
   @FXML private Rectangle rectangleDoor;
   @FXML private Rectangle rectanglePillow;
   @FXML private Rectangle rectangleWindow;
-  @FXML private Button buttonRed;
-  @FXML private Button buttonGreen;
-  @FXML private Button buttonBlue;
+  @FXML private Rectangle rectangleRed;
+  @FXML private Rectangle rectangleGreen;
+  @FXML private Rectangle rectangleBlue;
   @FXML private Label labelTimer;
   @FXML private Label labelPasscode;
 
@@ -108,17 +108,17 @@ public class RoomController {
   }
 
   @FXML
-  public void pressRed(){
+  public void clickRed(){
     System.out.println("Red");
   }
 
   @FXML
-  public void pressGreen(){
+  public void clickGreen(){
     System.out.println("Green");
   }
 
   @FXML
-  public void pressBlue(){
+  public void clickBlue(){
     System.out.println("Blue");
   }
 }
