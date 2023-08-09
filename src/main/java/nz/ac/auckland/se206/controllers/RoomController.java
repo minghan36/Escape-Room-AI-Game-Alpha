@@ -32,7 +32,10 @@ public class RoomController {
 
   /** Initializes the room view, it is called when the room loads. */
   public void initialize() {
-    // Initialization code goes here
+    Thread timeThread = new Thread(()-> {
+      startTimer();
+    });
+    timeThread.start();
   }
 
   /**
@@ -133,7 +136,13 @@ public class RoomController {
 
   @FXML
   public void updateTimerLabel() {
+    if (seconds == 0){
+      labelTimer.setText(String.valueOf(minutes) + ":00");
+    } else if (seconds<10){
+      labelTimer.setText(String.valueOf(minutes) + ":0" + String.valueOf(seconds));
+    }else {
     labelTimer.setText(String.valueOf(minutes) + ":" + String.valueOf(seconds));
+    }
   }
 
   public void startTimer() {

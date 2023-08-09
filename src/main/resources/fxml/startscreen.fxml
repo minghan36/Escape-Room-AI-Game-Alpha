@@ -5,14 +5,23 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="470.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.StartScreenController">
    <children>
-      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="93.0" layoutY="157.0" prefHeight="42.0" prefWidth="382.0" text="Would you like to start the game?">
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="93.0" layoutY="246.0" prefHeight="42.0" prefWidth="382.0" text="Would you like to start the game?">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
-      <Button fx:id="buttonStart" layoutX="264.0" layoutY="235.0" mnemonicParsing="false" onAction="#pressStart" text="Start" />
+      <Button fx:id="buttonStart" layoutX="264.0" layoutY="303.0" mnemonicParsing="false" onAction="#pressStart" text="Start" />
+      <Label alignment="CENTER" layoutX="15.0" layoutY="59.0" text="YOU MUST ESCAPE THE SPACESHIP!">
+         <font>
+            <Font size="36.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="62.0" layoutY="130.0" text="THE GUARD COMES BACK IN TWO MINUTES">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
