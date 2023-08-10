@@ -30,5 +30,10 @@
       <Rectangle fx:id="rectangleRed" arcHeight="5.0" arcWidth="5.0" fill="#ff1f1f" height="25.0" layoutX="427.0" layoutY="185.0" onMouseClicked="#clickRed" stroke="BLACK" strokeType="INSIDE" width="25.0" />
       <Rectangle fx:id="rectangleGreen" arcHeight="5.0" arcWidth="5.0" fill="#26ff1f" height="25.0" layoutX="427.0" layoutY="236.0" onMouseClicked="#clickGreen" stroke="BLACK" strokeType="INSIDE" width="25.0" />
       <Rectangle fx:id="rectangleBlue" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="25.0" layoutX="427.0" layoutY="289.0" onMouseClicked="#clickBlue" stroke="BLACK" strokeType="INSIDE" width="25.0" />
+      <Label fx:id="labelNoteContent" layoutX="14.0" layoutY="428.0" onMouseClicked="#clickContent" textFill="#33e4af">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
    </children>
 </Pane>

@@ -27,6 +27,7 @@ public class RoomController {
   @FXML private Rectangle rectangleBlue;
   @FXML private Label labelPasscode;
   @FXML private Label labelTimer;
+  @FXML private Label labelNoteContent;
   private static int minutes = 2;
   private static int seconds = 0;
 
@@ -106,9 +107,9 @@ public class RoomController {
    */
   @FXML
   public void clickPillow(MouseEvent event) {
-    System.out.println("vase clicked");
+    System.out.println("pillow clicked");
     if (GameState.isRiddleResolved && !GameState.isNoteFound) {
-      showDialog("Info", "Key Found", "You found a note under the pillow!");
+      showDialog("Info", "Note Found", "RGBG");
       GameState.isNoteFound = true;
     }
   }
@@ -143,6 +144,10 @@ public class RoomController {
     }else {
     labelTimer.setText(String.valueOf(minutes) + ":" + String.valueOf(seconds));
     }
+  }
+
+  @FXML void clickContent(){
+    
   }
 
   public void startTimer() {
