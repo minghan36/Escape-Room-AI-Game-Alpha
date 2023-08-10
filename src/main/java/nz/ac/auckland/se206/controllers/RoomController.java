@@ -179,7 +179,11 @@ public class RoomController extends GameState{
                           }
                         });
                     if (minutes == 0 && seconds == 0){
-                      GameState.isGameFinished = true;
+                      try {
+        App.setRoot("endscreen");
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
                     }
                   }
                 }));
@@ -191,7 +195,7 @@ public class RoomController extends GameState{
   private void checkPasscode(){
     if (labelPasscode.getText().equals(labelNoteContent.getText())){
       timeline.pause();
-      GameState.isGameFinished = true;
+      isGameWon = true;
       try {
         App.setRoot("endscreen");
       } catch (IOException e) {

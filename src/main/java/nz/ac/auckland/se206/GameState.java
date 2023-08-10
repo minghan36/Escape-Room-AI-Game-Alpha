@@ -10,10 +10,10 @@ public class GameState {
   protected static boolean isNoteFound = false;
 
 
-  protected static boolean isGameFinished = false;
+  protected static boolean isGameWon = false;
 
   protected static int minutes = 2;
-  
+
   protected static int seconds = 0;
 
 
