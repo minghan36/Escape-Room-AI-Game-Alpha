@@ -112,6 +112,7 @@ public class RoomController {
     if (GameState.isRiddleResolved && !GameState.isNoteFound) {
       showDialog("Info", "Note Found", "RGBG");
       GameState.isNoteFound = true;
+      labelNoteContent.setText("RGBG");
     }
   }
 
@@ -124,16 +125,34 @@ public class RoomController {
   @FXML
   public void clickRed(MouseEvent event) {
     System.out.println("Red");
+    if (GameState.isRiddleResolved && GameState.isNoteFound){
+      labelPasscode.setText(labelPasscode.getText()+"R");
+      if (labelPasscode.getText().length()==4){
+        checkPasscode();
+      }
+    }
   }
 
   @FXML
   public void clickGreen(MouseEvent event) {
     System.out.println("Green");
+    if (GameState.isRiddleResolved && GameState.isNoteFound){
+      labelPasscode.setText(labelPasscode.getText()+"G");
+      if (labelPasscode.getText().length()==4){
+        checkPasscode();
+      }
+    }
   }
 
   @FXML
   public void clickBlue(MouseEvent event) {
     System.out.println("Blue");
+    if (GameState.isRiddleResolved && GameState.isNoteFound){
+      labelPasscode.setText(labelPasscode.getText()+"B");
+      if (labelPasscode.getText().length()==4){
+        checkPasscode();
+      }
+    }
   }
 
   @FXML
@@ -189,6 +208,7 @@ public class RoomController {
       GameState.isGameFinished = true;
     } else {
       showDialog("Info", "That is not right", "Try again");
+      labelPasscode.setText("");
     }
   }
 }
