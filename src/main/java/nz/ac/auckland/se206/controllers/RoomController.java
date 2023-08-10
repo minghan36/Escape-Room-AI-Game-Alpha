@@ -17,7 +17,7 @@ import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameState;
 
 /** Controller class for the room view. */
-public class RoomController {
+public class RoomController extends GameState{
 
   @FXML private Rectangle rectangleDoor;
   @FXML private Rectangle rectanglePillow;
@@ -28,8 +28,6 @@ public class RoomController {
   @FXML private Label labelPasscode;
   @FXML private Label labelTimer;
   @FXML private Label labelNoteContent;
-  private static int minutes = 2;
-  private static int seconds = 0;
   private static Timeline timeline;
 
   /** Initializes the room view, it is called when the room loads. */
@@ -155,17 +153,6 @@ public class RoomController {
     }
   }
 
-  @FXML
-  public void updateTimerLabel() {
-    if (seconds == 0){
-      labelTimer.setText(String.valueOf(minutes) + ":00");
-    } else if (seconds<10){
-      labelTimer.setText(String.valueOf(minutes) + ":0" + String.valueOf(seconds));
-    }else {
-    labelTimer.setText(String.valueOf(minutes) + ":" + String.valueOf(seconds));
-    }
-  }
-
   @FXML void clickContent(){
 
   }
@@ -188,7 +175,7 @@ public class RoomController {
                         new Runnable() {
                           @Override
                           public void run() {
-                            updateTimerLabel();
+                            labelTimer.setText(getTimeLeft());
                           }
                         });
                     if (minutes == 0 && seconds == 0){
@@ -204,8 +191,12 @@ public class RoomController {
   private void checkPasscode(){
     if (labelPasscode.getText().equals(labelNoteContent.getText())){
       timeline.pause();
-      showDialog("Info", "CONGRAGULATIONS! YOU WIN!", "YOU HAD "+ labelTimer.getText()+" TO SPARE.");
       GameState.isGameFinished = true;
+      try {
+        App.setRoot("endscreen");
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
     } else {
       showDialog("Info", "That is not right", "Try again");
       labelPasscode.setText("");

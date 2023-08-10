@@ -5,8 +5,9 @@ import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import nz.ac.auckland.se206.App;
+import nz.ac.auckland.se206.GameState;
 
-public class StartScreenController {
+public class StartScreenController extends GameState{
     
     @FXML 
     private Button buttonStart;
