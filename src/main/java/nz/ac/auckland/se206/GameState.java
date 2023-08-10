@@ -8,4 +8,6 @@ public class GameState {
 
   /** Indicates whether the key has been found. */
   public static boolean isNoteFound = false;
+
+  public static boolean isGameFinished = false;
 }

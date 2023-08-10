@@ -30,6 +30,7 @@ public class RoomController {
   @FXML private Label labelNoteContent;
   private static int minutes = 2;
   private static int seconds = 0;
+  private static Timeline timeline;
 
   /** Initializes the room view, it is called when the room loads. */
   public void initialize() {
@@ -147,11 +148,11 @@ public class RoomController {
   }
 
   @FXML void clickContent(){
-    
+
   }
 
   public void startTimer() {
-    Timeline timeline =
+    timeline =
         new Timeline(
             new KeyFrame(
                 Duration.seconds(1),
@@ -171,10 +172,23 @@ public class RoomController {
                             updateTimerLabel();
                           }
                         });
+                    if (minutes == 0 && seconds == 0){
+                      GameState.isGameFinished = true;
+                    }
                   }
                 }));
 
     timeline.setCycleCount(120);
     timeline.play();
+  }
+
+  private void checkPasscode(){
+    if (labelPasscode.getText().equals(labelNoteContent.getText())){
+      timeline.pause();
+      showDialog("Info", "CONGRAGULATIONS! YOU WIN!", "YOU HAD "+ labelTimer.getText()+" TO SPARE.");
+      GameState.isGameFinished = true;
+    } else {
+      showDialog("Info", "That is not right", "Try again");
+    }
   }
 }
