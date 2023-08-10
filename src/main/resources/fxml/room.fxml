@@ -17,7 +17,7 @@
       <Rectangle fx:id="rectanglePillow" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff" focusTraversable="true" height="31.0" layoutX="129.0" layoutY="331.0" onMouseClicked="#clickPillow" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="65.0" />
       <Rectangle fx:id="rectangleDoor" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff" focusTraversable="true" height="319.0" layoutX="452.0" layoutY="109.0" onMouseClicked="#clickDoor" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="120.0" />
       <Rectangle fx:id="rectangleWindow" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="104.0" layoutX="131.0" layoutY="210.0" onMouseClicked="#clickWindow" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="198.0" />
-      <Label fx:id="labelTimer" layoutX="181.0" layoutY="89.0" text="2:00">
+      <Label fx:id="labelTimer" layoutX="14.0" layoutY="30.0" text="2:00" textFill="#00ffcc">
          <font>
             <Font size="36.0" />
          </font>
@@ -30,10 +30,16 @@
       <Rectangle fx:id="rectangleRed" arcHeight="5.0" arcWidth="5.0" fill="#ff1f1f" height="25.0" layoutX="427.0" layoutY="185.0" onMouseClicked="#clickRed" stroke="BLACK" strokeType="INSIDE" width="25.0" />
       <Rectangle fx:id="rectangleGreen" arcHeight="5.0" arcWidth="5.0" fill="#26ff1f" height="25.0" layoutX="427.0" layoutY="236.0" onMouseClicked="#clickGreen" stroke="BLACK" strokeType="INSIDE" width="25.0" />
       <Rectangle fx:id="rectangleBlue" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="25.0" layoutX="427.0" layoutY="289.0" onMouseClicked="#clickBlue" stroke="BLACK" strokeType="INSIDE" width="25.0" />
-      <Label fx:id="labelNoteContent" layoutX="14.0" layoutY="428.0" onMouseClicked="#clickContent" textFill="#33e4af">
+      <Label fx:id="labelNoteContent" layoutX="14.0" layoutY="428.0" onMouseClicked="#clickContent" textFill="#00ffcc">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
+      <ImageView fx:id="speechBubble" fitHeight="140.0" fitWidth="218.0" layoutX="242.0" layoutY="39.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/speechBubble.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="labelChat" alignment="CENTER" contentDisplay="CENTER" layoutX="258.0" layoutY="53.0" prefHeight="88.0" prefWidth="154.0" textAlignment="CENTER" />
    </children>
 </Pane>

@@ -9,6 +9,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
@@ -28,6 +29,8 @@ public class RoomController extends GameState{
   @FXML private Label labelPasscode;
   @FXML private Label labelTimer;
   @FXML private Label labelNoteContent;
+  @FXML private Label labelChat;
+  @FXML private ImageView speechBubble;
   private static Timeline timeline;
 
   /** Initializes the room view, it is called when the room loads. */
@@ -84,7 +87,8 @@ public class RoomController extends GameState{
     System.out.println("door clicked");
 
     if (!GameState.isRiddleResolved) {
-      showDialog("Info", "Riddle", "You need to resolve the riddle!");
+      speechBubble.setOpacity(1);
+      labelChat.setText("SHIP AI LOADING...");
       App.setRoot("chat");
       return;
     }

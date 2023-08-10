@@ -2,6 +2,7 @@ package nz.ac.auckland.se206;
 
 import java.io.IOException;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -20,7 +21,23 @@ public class App extends Application {
   }
 
   public static void setRoot(String fxml) throws IOException {
-    scene.setRoot(loadFxml(fxml));
+    Thread sceneThread = new Thread(() -> {
+      Parent root;
+      try {
+        root = loadFxml(fxml);
+        Platform.runLater(
+                        new Runnable() {
+                          @Override
+                          public void run() {
+                            scene.setRoot(root);
+                          }
+                        });
+      } catch (IOException e) {
+        e.printStackTrace();
+        return;
+      }
+    });
+    sceneThread.start();
   }
 
   /**
