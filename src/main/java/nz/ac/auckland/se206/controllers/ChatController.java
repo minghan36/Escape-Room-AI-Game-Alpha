@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.shape.Circle;
 import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameState;
 import nz.ac.auckland.se206.gpt.ChatMessage;
@@ -20,7 +21,9 @@ public class ChatController extends GameState{
   @FXML private TextArea chatTextArea;
   @FXML private TextField inputText;
   @FXML private Button sendButton;
-
+  @FXML private Circle circleOne;
+  @FXML private Circle circleTwo;
+  @FXML private Circle circleThree;
 
 
   /**
@@ -51,12 +54,14 @@ public class ChatController extends GameState{
    * @throws ApiProxyException if there is an error communicating with the API proxy
    */
   private ChatMessage runGpt(ChatMessage msg) throws ApiProxyException {
+    setCircles(0.6);
     chatCompletionRequestChat.addMessage(msg);
     try {
       ChatCompletionResult chatCompletionResult = chatCompletionRequestChat.execute();
       Choice result = chatCompletionResult.getChoices().iterator().next();
       chatCompletionRequestChat.addMessage(result.getChatMessage());
       appendChatMessage(result.getChatMessage());
+      setCircles(0);
       return result.getChatMessage();
     } catch (ApiProxyException e) {
       // TODO handle exception appropriately
@@ -97,5 +102,11 @@ public class ChatController extends GameState{
   @FXML
   private void onGoBack(ActionEvent event) throws ApiProxyException, IOException {
     App.setRoot("room");
+  }
+
+  private void setCircles(double arg){
+    circleOne.setOpacity(arg);
+    circleTwo.setOpacity(arg);
+    circleThree.setOpacity(arg);
   }
 }

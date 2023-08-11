@@ -15,16 +15,24 @@ import javafx.stage.Stage;
 public class App extends Application {
 
   private static Scene scene;
+  private static Parent room = null;
 
   public static void main(final String[] args) {
     launch();
   }
 
   public static void setRoot(String fxml) throws IOException {
+    if (fxml.equals("room")&&room!=null){
+      scene.setRoot(room);
+      return;
+    }
     Thread sceneThread = new Thread(() -> {
       Parent root;
       try {
         root = loadFxml(fxml);
+        if (fxml.equals("room")&&room == null){
+          room = root;
+        }
         Platform.runLater(
                         new Runnable() {
                           @Override

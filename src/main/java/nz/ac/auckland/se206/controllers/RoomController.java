@@ -19,12 +19,11 @@ import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameState;
 import nz.ac.auckland.se206.gpt.ChatMessage;
 import nz.ac.auckland.se206.gpt.openai.ApiProxyException;
-import nz.ac.auckland.se206.gpt.openai.ChatCompletionRequest;
 import nz.ac.auckland.se206.gpt.openai.ChatCompletionResult;
 import nz.ac.auckland.se206.gpt.openai.ChatCompletionResult.Choice;
 
 /** Controller class for the room view. */
-public class RoomController extends GameState{
+public class RoomController extends GameState {
 
   @FXML private Rectangle rectangleDoor;
   @FXML private Rectangle rectanglePillow;
@@ -39,14 +38,24 @@ public class RoomController extends GameState{
   @FXML private Label labelChat;
   @FXML private ImageView speechBubble;
 
-  private static Timeline timeline;
+  private static Timeline timelineTime;
+  private static Timeline timelineEncourage;
+
   /** Initializes the room view, it is called when the room loads. */
   public void initialize() {
 
-    Thread timeThread = new Thread(()-> {
-      startTimer();
-    });
+    Thread timeThread =
+        new Thread(
+            () -> {
+              startTimer();
+            });
+            /*Thread encourageThread =
+        new Thread(
+            () -> {
+              startEncouraging();
+            });*/
     timeThread.start();
+    //encourageThread.start();
   }
 
   /**
@@ -96,20 +105,13 @@ public class RoomController extends GameState{
     rectangleDoor.setDisable(true);
     if (!GameState.isRiddleResolved) {
       isGameMasterLoaded = true;
-      speechBubble.setOpacity(1);
-      circle.setOpacity(1);
-      labelChat.setText("SHIP AI LOADING...");
+      displayMessage("SHIP AI LOADING...");
       App.setRoot("chat");
       return;
     }
 
     if (!GameState.isNoteFound) {
-      showDialog(
-          "Info",
-          "Find the missing item!",
-          "You resolved the riddle, now you know where the item is.");
-    } else {
-      showDialog("Info", "You Won!", "Good Job!");
+      displayMessage("You have solved the Riddle. Now find the item! (Pillow)");
     }
 
     rectangleDoor.setDisable(false);
@@ -135,35 +137,35 @@ public class RoomController extends GameState{
   public void clickWindow(MouseEvent event) {
     System.out.println("Window Clicked");
     rectangleWindow.setDisable(true);
-    if (isGameMasterLoaded){
-    chatCompletionRequestWindow.addMessage(new ChatMessage("user", "With the following sentence as a guide. Aren't the stars beautiful. Acknowledge the beauty of space in at most four words."));
-    ChatCompletionResult chatCompletionResult;
-    try {
-      chatCompletionResult = chatCompletionRequestWindow.execute();
-      Choice result = chatCompletionResult.getChoices().iterator().next();
-      speechBubble.setOpacity(1);
-      circle.setOpacity(1);
-      labelChat.setText(result.getChatMessage().getContent());
-    } catch (ApiProxyException e) {
-      e.printStackTrace();
+    if (isGameMasterLoaded) {
+      chatCompletionRequestWindow.addMessage(
+          new ChatMessage(
+              "user",
+              "With the following sentence as a guide. Aren't the stars beautiful. Acknowledge the"
+                  + " beauty of space in at most four words."));
+      ChatCompletionResult chatCompletionResult;
+      try {
+        chatCompletionResult = chatCompletionRequestWindow.execute();
+        Choice result = chatCompletionResult.getChoices().iterator().next();
+        displayMessage(result.getChatMessage().getContent());
+      } catch (ApiProxyException e) {
+        e.printStackTrace();
+      }
     }
-  }
-      rectangleWindow.setDisable(false);
+    rectangleWindow.setDisable(false);
   }
 
   @FXML
-  public void clickCircle(){
-    circle.setOpacity(0);
-    speechBubble.setOpacity(0);
-    labelChat.setText("");
+  public void clickCircle() {
+    removeMessage();
   }
 
   @FXML
   public void clickRed(MouseEvent event) {
     System.out.println("Red");
-    if (GameState.isRiddleResolved && GameState.isNoteFound){
-      labelPasscode.setText(labelPasscode.getText()+"R");
-      if (labelPasscode.getText().length()==4){
+    if (GameState.isRiddleResolved && GameState.isNoteFound) {
+      labelPasscode.setText(labelPasscode.getText() + "R");
+      if (labelPasscode.getText().length() == 4) {
         checkPasscode();
       }
     }
@@ -172,9 +174,9 @@ public class RoomController extends GameState{
   @FXML
   public void clickGreen(MouseEvent event) {
     System.out.println("Green");
-    if (GameState.isRiddleResolved && GameState.isNoteFound){
-      labelPasscode.setText(labelPasscode.getText()+"G");
-      if (labelPasscode.getText().length()==4){
+    if (GameState.isRiddleResolved && GameState.isNoteFound) {
+      labelPasscode.setText(labelPasscode.getText() + "G");
+      if (labelPasscode.getText().length() == 4) {
         checkPasscode();
       }
     }
@@ -183,20 +185,19 @@ public class RoomController extends GameState{
   @FXML
   public void clickBlue(MouseEvent event) {
     System.out.println("Blue");
-    if (GameState.isRiddleResolved && GameState.isNoteFound){
-      labelPasscode.setText(labelPasscode.getText()+"B");
-      if (labelPasscode.getText().length()==4){
+    if (GameState.isRiddleResolved && GameState.isNoteFound) {
+      labelPasscode.setText(labelPasscode.getText() + "B");
+      if (labelPasscode.getText().length() == 4) {
         checkPasscode();
       }
     }
   }
 
-  @FXML void clickContent(){
-
-  }
+  @FXML
+  void clickContent() {}
 
   public void startTimer() {
-    timeline =
+    timelineTime =
         new Timeline(
             new KeyFrame(
                 Duration.seconds(1),
@@ -209,9 +210,6 @@ public class RoomController extends GameState{
                     } else if (seconds > 0) {
                       seconds--;
                     }
-                    if (isGameMasterLoaded && ((minutes*60 + seconds)%20 == 0)){
-
-                    }
                     Platform.runLater(
                         new Runnable() {
                           @Override
@@ -219,23 +217,59 @@ public class RoomController extends GameState{
                             labelTimer.setText(getTimeLeft());
                           }
                         });
-                    if (minutes == 0 && seconds == 0){
+                    if (minutes == 0 && seconds == 0) {
                       try {
-        App.setRoot("endscreen");
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
+                        App.setRoot("endscreen");
+                      } catch (IOException e) {
+                        e.printStackTrace();
+                      }
                     }
                   }
                 }));
 
-    timeline.setCycleCount(120);
-    timeline.play();
+    timelineTime.setCycleCount(120);
+    timelineTime.play();
   }
 
-  private void checkPasscode(){
-    if (labelPasscode.getText().equals(labelNoteContent.getText())){
-      timeline.pause();
+ /*  public void startEncouraging() {
+    timelineEncourage =
+        new Timeline(
+            new KeyFrame(
+                Duration.seconds(30),
+                new EventHandler<ActionEvent>() {
+                  @Override
+                  public void handle(ActionEvent event) {
+                    if (isGameMasterLoaded) {
+                      chatCompletionRequestWindow.addMessage(
+                          new ChatMessage(
+                              "user",
+                              "With the following sentence as a guide. Aren't the stars beautiful."
+                                  + " Acknowledge the beauty of space in at most four words."));
+                      ChatCompletionResult chatCompletionResult;
+                      try {
+                        chatCompletionResult = chatCompletionRequestWindow.execute();
+                        Choice result = chatCompletionResult.getChoices().iterator().next();
+                        Platform.runLater(
+                        new Runnable() {
+                          @Override
+                          public void run() {
+                            displayMessage(result.getChatMessage().getContent());
+                          }
+                        });
+                      } catch (ApiProxyException e) {
+                        e.printStackTrace();
+                      }
+                    }
+                  }
+                }));
+
+    timelineEncourage.setCycleCount(3);
+    timelineEncourage.play();
+  }
+*/
+  private void checkPasscode() {
+    if (labelPasscode.getText().equals(labelNoteContent.getText())) {
+      timelineTime.pause();
       isGameWon = true;
       try {
         App.setRoot("endscreen");
@@ -246,5 +280,17 @@ public class RoomController extends GameState{
       showDialog("Info", "That is not right", "Try again");
       labelPasscode.setText("");
     }
+  }
+
+  public void displayMessage(String message){
+    speechBubble.setOpacity(1);
+    circle.setOpacity(1);
+    labelChat.setText(message);
+  }
+
+  public void removeMessage(){
+    speechBubble.setOpacity(0);
+    circle.setOpacity(0);
+    labelChat.setText("");
   }
 }
