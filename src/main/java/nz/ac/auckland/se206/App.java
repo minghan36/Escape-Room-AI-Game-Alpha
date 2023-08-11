@@ -17,6 +17,7 @@ public class App extends Application {
   private static Scene scene;
   private static Parent room = null;
   private static Parent chat = null;
+
   public static void main(final String[] args) {
     launch();
   }
@@ -25,21 +26,21 @@ public class App extends Application {
     if (fxml.equals("room") && room != null) {
       scene.setRoot(room);
       return;
-    } else if (fxml.equals("chat") && chat != null){
+    } else if (fxml.equals("chat") && chat != null) {
       scene.setRoot(chat);
       return;
     }
-    //Uses threads to load the roots of the different views.
+    // Uses threads to load the roots of the different views.
     Thread sceneThread =
         new Thread(
             () -> {
               Parent root;
               try {
                 root = loadFxml(fxml);
-                //Sets the roots once loaded, so they can be called in the future.
+                // Sets the roots once loaded, so they can be called in the future.
                 if (fxml.equals("room") && room == null) {
                   room = root;
-                } else if (fxml.equals("chat") && chat == null){
+                } else if (fxml.equals("chat") && chat == null) {
                   chat = root;
                 }
                 Platform.runLater(

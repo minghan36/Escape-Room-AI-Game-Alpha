@@ -27,7 +27,7 @@ public class StartScreenController extends GameState {
    * @throws IOException if there is an error loading the room view
    */
   @FXML
-  private void pressStart() throws IOException {
+  private void onPressStart() throws IOException {
     App.setRoot("room");
   }
 }

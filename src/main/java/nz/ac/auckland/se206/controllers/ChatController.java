@@ -25,6 +25,7 @@ public class ChatController extends GameState {
   @FXML private Circle circleOne;
   @FXML private Circle circleTwo;
   @FXML private Circle circleThree;
+  private Choice result = null;
 
   /**
    * Initializes the chat view, loading the riddle.
@@ -33,9 +34,24 @@ public class ChatController extends GameState {
    */
   @FXML
   public void initialize() throws ApiProxyException {
-    chatCompletionRequestChat =
-        new ChatCompletionRequest().setN(1).setTemperature(1).setTopP(0.8).setMaxTokens(100);
-    runGpt(new ChatMessage("user", GptPromptEngineering.getRiddleWithGivenWord("pillow")));
+    Thread computerThread =
+        new Thread(
+            () -> {
+              chatCompletionRequestChat =
+                  new ChatCompletionRequest()
+                      .setN(1)
+                      .setTemperature(1)
+                      .setTopP(0.8)
+                      .setMaxTokens(100);
+              try {
+                runGpt(
+                    new ChatMessage("user", GptPromptEngineering.getRiddleWithGivenWord("pillow")));
+              } catch (ApiProxyException e) {
+                e.printStackTrace();
+              }
+              textToSpeech.speak(result.getChatMessage().getContent());
+            });
+    computerThread.start();
   }
 
   /**
@@ -58,7 +74,7 @@ public class ChatController extends GameState {
     chatCompletionRequestChat.addMessage(msg);
     try {
       ChatCompletionResult chatCompletionResult = chatCompletionRequestChat.execute();
-      Choice result = chatCompletionResult.getChoices().iterator().next();
+      result = chatCompletionResult.getChoices().iterator().next();
       chatCompletionRequestChat.addMessage(result.getChatMessage());
       Platform.runLater(
           new Runnable() {
@@ -70,7 +86,6 @@ public class ChatController extends GameState {
       setCircles(0);
       return result.getChatMessage();
     } catch (ApiProxyException e) {
-      // TODO handle exception appropriately
       e.printStackTrace();
       return null;
     }

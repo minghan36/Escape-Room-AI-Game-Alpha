@@ -25,20 +25,21 @@ import nz.ac.auckland.se206.gpt.openai.ChatCompletionResult.Choice;
 /** Controller class for the room view. */
 public class RoomController extends GameState {
 
+  private static Timeline timelineTime;
+  private static Timeline timelineEncourage;
+
+  @FXML private Circle circle;
   @FXML private Rectangle rectangleDoor;
   @FXML private Rectangle rectanglePillow;
   @FXML private Rectangle rectangleWindow;
   @FXML private Rectangle rectangleRed;
   @FXML private Rectangle rectangleGreen;
   @FXML private Rectangle rectangleBlue;
-  @FXML private Circle circle;
   @FXML private Label labelPasscode;
   @FXML private Label labelTimer;
   @FXML private Label labelNoteContent;
   @FXML private Label labelChat;
   @FXML private ImageView speechBubble;
-  private static Timeline timelineTime;
-  private static Timeline timelineEncourage;
 
   /** Initializes the room view, it is called when the room loads. */
   public void initialize() {
@@ -233,7 +234,11 @@ public class RoomController extends GameState {
    * @param event the mouse event
    */
   @FXML
-  public void clickContent(MouseEvent event) {}
+  public void clickContent(MouseEvent event) {
+    labelNoteContent.setDisable(true);
+    textToSpeech.speak("Red Green Blue Green");
+    labelNoteContent.setDisable(false);
+  }
 
   /** Creates a TimeLine that counts down from 120 every second. */
   public void startTimer() {
@@ -261,6 +266,7 @@ public class RoomController extends GameState {
                         });
                     // Calls endscreen if the time reaches 0.
                     if (minutes == 0 && seconds == 0) {
+                      textToSpeech.terminate();
                       try {
                         App.setRoot("endscreen");
                       } catch (IOException e) {
@@ -328,6 +334,7 @@ public class RoomController extends GameState {
       timelineTime.pause();
       isGameWon = true;
       timelineEncourage.pause();
+      textToSpeech.terminate();
       try {
         App.setRoot("endscreen");
       } catch (IOException e) {

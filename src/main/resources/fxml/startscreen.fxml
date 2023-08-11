@@ -12,7 +12,7 @@
             <Font size="24.0" />
          </font>
       </Label>
-      <Button fx:id="buttonStart" layoutX="264.0" layoutY="303.0" mnemonicParsing="false" onAction="#pressStart" text="Start" />
+      <Button fx:id="buttonStart" layoutX="264.0" layoutY="303.0" mnemonicParsing="false" onAction="#onPressStart" text="Start" />
       <Label alignment="CENTER" layoutX="15.0" layoutY="59.0" text="YOU MUST ESCAPE THE SPACESHIP!">
          <font>
             <Font size="36.0" />
