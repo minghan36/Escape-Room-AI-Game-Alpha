@@ -1,13 +1,19 @@
 package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
+
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.shape.Circle;
+import javafx.util.Duration;
 import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameState;
 import nz.ac.auckland.se206.gpt.ChatMessage;
@@ -25,6 +31,7 @@ public class ChatController extends GameState {
   @FXML private Circle circleOne;
   @FXML private Circle circleTwo;
   @FXML private Circle circleThree;
+  @FXML private Label labelTimer;
   private Choice result = null;
 
   /**
@@ -34,6 +41,13 @@ public class ChatController extends GameState {
    */
   @FXML
   public void initialize() throws ApiProxyException {
+    //Thread for timer
+    Thread timeThread =
+        new Thread(
+            () -> {
+              startTimer();
+            });
+    timeThread.start();
     Thread computerThread =
         new Thread(
             () -> {
@@ -147,5 +161,38 @@ public class ChatController extends GameState {
     circleOne.setOpacity(arg);
     circleTwo.setOpacity(arg);
     circleThree.setOpacity(arg);
+  }
+
+  /** Creates a TimeLine that updates to time left in the game every second */
+  public void startTimer() {
+    Timeline timelineTime =
+        new Timeline(
+            new KeyFrame(
+                Duration.seconds(1),
+                new EventHandler<ActionEvent>() {
+                  @Override
+                  public void handle(ActionEvent event) {
+                    // Displays the current time to the player.
+                    Platform.runLater(
+                        new Runnable() {
+                          @Override
+                          public void run() {
+                            labelTimer.setText(getTimeLeft());
+                          }
+                        });
+                    // Calls endscreen if the time reaches 0.
+                    if (minutes == 0 && seconds == 0) {
+                      textToSpeech.terminate();
+                      try {
+                        App.setRoot("endscreen");
+                      } catch (IOException e) {
+                        e.printStackTrace();
+                      }
+                    }
+                  }
+                }));
+
+    timelineTime.setCycleCount((minutes*60)+seconds-1);
+    timelineTime.play();
   }
 }
