@@ -12,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import nz.ac.auckland.se206.App;
@@ -31,6 +32,7 @@ public class RoomController extends GameState{
   @FXML private Rectangle rectangleRed;
   @FXML private Rectangle rectangleGreen;
   @FXML private Rectangle rectangleBlue;
+  @FXML private Circle circle;
   @FXML private Label labelPasscode;
   @FXML private Label labelTimer;
   @FXML private Label labelNoteContent;
@@ -95,6 +97,7 @@ public class RoomController extends GameState{
     if (!GameState.isRiddleResolved) {
       isGameMasterLoaded = true;
       speechBubble.setOpacity(1);
+      circle.setOpacity(1);
       labelChat.setText("SHIP AI LOADING...");
       App.setRoot("chat");
       return;
@@ -139,12 +142,20 @@ public class RoomController extends GameState{
       chatCompletionResult = chatCompletionRequestWindow.execute();
       Choice result = chatCompletionResult.getChoices().iterator().next();
       speechBubble.setOpacity(1);
+      circle.setOpacity(1);
       labelChat.setText(result.getChatMessage().getContent());
     } catch (ApiProxyException e) {
       e.printStackTrace();
     }
   }
       rectangleWindow.setDisable(false);
+  }
+
+  @FXML
+  public void clickCircle(){
+    circle.setOpacity(0);
+    speechBubble.setOpacity(0);
+    labelChat.setText("");
   }
 
   @FXML
