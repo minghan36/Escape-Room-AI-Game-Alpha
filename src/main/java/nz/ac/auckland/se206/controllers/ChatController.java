@@ -1,7 +1,6 @@
 package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
-
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
@@ -41,7 +40,7 @@ public class ChatController extends GameState {
    */
   @FXML
   public void initialize() throws ApiProxyException {
-    //Thread for timer
+    // Thread for timer
     Thread timeThread =
         new Thread(
             () -> {
@@ -192,7 +191,7 @@ public class ChatController extends GameState {
                   }
                 }));
 
-    timelineTime.setCycleCount((minutes*60)+seconds-1);
+    timelineTime.setCycleCount((minutes * 60) + seconds - 1);
     timelineTime.play();
   }
 }
