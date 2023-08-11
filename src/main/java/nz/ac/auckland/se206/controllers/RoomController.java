@@ -7,6 +7,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
@@ -50,6 +51,26 @@ public class RoomController extends GameState {
     timeThread.start();
   }
 
+   /**
+   * Handles the key pressed event.
+   *
+   * @param event the key event
+   */
+  @FXML
+  public void onKeyPressed(KeyEvent event) {
+    System.out.println("key " + event.getCode() + " pressed");
+  }
+
+  /**
+   * Handles the key released event.
+   *
+   * @param event the key event
+   */
+  @FXML
+  public void onKeyReleased(KeyEvent event) {
+    System.out.println("key " + event.getCode() + " released");
+  }
+
   /**
    * Displays a dialog box with the given title, header text, and message.
    *
@@ -75,9 +96,11 @@ public class RoomController extends GameState {
   public void clickDoor(MouseEvent event) throws IOException {
     System.out.println("door clicked");
     // Loads the chat view while displaying message to the player if the riddle has not been solved.
-    if (!GameState.isRiddleResolved) {
+    if (!isRiddleResolved) {
       isGameMasterLoaded = true;
+      if (!isGameMasterLoaded){
       displayMessage("SHIP AI LOADING...");
+      }
       App.setRoot("chat");
       return;
     }
