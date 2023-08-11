@@ -49,13 +49,8 @@ public class RoomController extends GameState {
             () -> {
               startTimer();
             });
-            /*Thread encourageThread =
-        new Thread(
-            () -> {
-              startEncouraging();
-            });*/
     timeThread.start();
-    //encourageThread.start();
+    
   }
 
   /**
@@ -102,7 +97,6 @@ public class RoomController extends GameState {
   @FXML
   public void clickDoor(MouseEvent event) throws IOException {
     System.out.println("door clicked");
-    rectangleDoor.setDisable(true);
     if (!GameState.isRiddleResolved) {
       isGameMasterLoaded = true;
       displayMessage("SHIP AI LOADING...");
@@ -113,7 +107,7 @@ public class RoomController extends GameState {
     if (!GameState.isNoteFound) {
       displayMessage("You have solved the Riddle. Now find the item! (Pillow)");
     }
-
+    removeMessage();
     rectangleDoor.setDisable(false);
   }
 
@@ -130,7 +124,14 @@ public class RoomController extends GameState {
       showDialog("Info", "Note Found", "RGBG");
       GameState.isNoteFound = true;
       labelNoteContent.setText("RGBG");
+      Thread encourageThread =
+        new Thread(
+            () -> {
+              startEncouraging();
+            });
+            encourageThread.start();
     }
+    rectanglePillow.setDisable(false);
   }
 
   @FXML
@@ -231,23 +232,22 @@ public class RoomController extends GameState {
     timelineTime.play();
   }
 
- /*  public void startEncouraging() {
+ public void startEncouraging() {
     timelineEncourage =
         new Timeline(
             new KeyFrame(
-                Duration.seconds(30),
+                Duration.seconds(20),
                 new EventHandler<ActionEvent>() {
                   @Override
                   public void handle(ActionEvent event) {
                     if (isGameMasterLoaded) {
-                      chatCompletionRequestWindow.addMessage(
+                      chatCompletionRequestEncourage.addMessage(
                           new ChatMessage(
                               "user",
-                              "With the following sentence as a guide. Aren't the stars beautiful."
-                                  + " Acknowledge the beauty of space in at most four words."));
+                              "You are an AI game master of an escape room. Encourage the player with at most five words."));
                       ChatCompletionResult chatCompletionResult;
                       try {
-                        chatCompletionResult = chatCompletionRequestWindow.execute();
+                        chatCompletionResult = chatCompletionRequestEncourage.execute();
                         Choice result = chatCompletionResult.getChoices().iterator().next();
                         Platform.runLater(
                         new Runnable() {
@@ -263,14 +263,15 @@ public class RoomController extends GameState {
                   }
                 }));
 
-    timelineEncourage.setCycleCount(3);
+    timelineEncourage.setCycleCount(4);
     timelineEncourage.play();
   }
-*/
+
   private void checkPasscode() {
     if (labelPasscode.getText().equals(labelNoteContent.getText())) {
       timelineTime.pause();
       isGameWon = true;
+      timelineEncourage.pause();
       try {
         App.setRoot("endscreen");
       } catch (IOException e) {
