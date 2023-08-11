@@ -50,7 +50,7 @@
     <TextArea fx:id="chatTextArea" layoutX="34.0" layoutY="27.0" opacity="0.65" prefHeight="367.0" prefWidth="538.0" wrapText="true" />
     <TextField fx:id="inputText" layoutX="34.0" layoutY="418.0" opacity="0.65" prefHeight="26.0" prefWidth="356.0" />
     <Button fx:id="sendButton" layoutX="417.0" layoutY="418.0" mnemonicParsing="false" onAction="#onSendMessage" opacity="0.65" text="Send" />
-    <Button layoutX="487.0" layoutY="418.0" mnemonicParsing="false" onAction="#onGoBack" opacity="0.65" text="Go Back" />
+    <Button fx:id="buttonBack" layoutX="487.0" layoutY="418.0" mnemonicParsing="false" onAction="#onGoBack" opacity="0.65" text="Go Back" />
       <Circle fx:id="circleOne" fill="#8c8c8c" layoutX="546.0" layoutY="375.0" opacity="0.0" radius="7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
       <Circle fx:id="circleTwo" fill="#8c8c8c" layoutX="524.0" layoutY="375.0" opacity="0.0" radius="7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
       <Circle fx:id="circleThree" fill="#8c8c8c" layoutX="500.0" layoutY="375.0" opacity="0.0" radius="7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />

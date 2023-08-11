@@ -26,6 +26,7 @@ import nz.ac.auckland.se206.gpt.openai.ChatCompletionResult.Choice;
 public class ChatController extends GameState {
   @FXML private TextArea chatTextArea;
   @FXML private TextField inputText;
+  @FXML private Button buttonBack;
   @FXML private Button sendButton;
   @FXML private Circle circleOne;
   @FXML private Circle circleTwo;
@@ -50,6 +51,8 @@ public class ChatController extends GameState {
     Thread computerThread =
         new Thread(
             () -> {
+              buttonBack.setDisable(true);
+              sendButton.setDisable(true);
               chatCompletionRequestChat =
                   new ChatCompletionRequest()
                       .setN(1)
@@ -63,6 +66,8 @@ public class ChatController extends GameState {
                 e.printStackTrace();
               }
               textToSpeech.speak(result.getChatMessage().getContent());
+              buttonBack.setDisable(false);
+              sendButton.setDisable(false);
             });
     computerThread.start();
   }

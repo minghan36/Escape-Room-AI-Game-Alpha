@@ -98,9 +98,6 @@ public class RoomController extends GameState {
     System.out.println("door clicked");
     // Loads the chat view while displaying message to the player if the riddle has not been solved.
     if (!isRiddleResolved) {
-      if (!isGameMasterLoaded) {
-        displayMessage("SHIP AI LOADING...");
-      }
       isGameMasterLoaded = true;
       App.setRoot("chat");
       return;
