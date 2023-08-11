@@ -16,35 +16,44 @@ public class App extends Application {
 
   private static Scene scene;
   private static Parent room = null;
-
+  private static Parent chat = null;
   public static void main(final String[] args) {
     launch();
   }
 
   public static void setRoot(String fxml) throws IOException {
-    if (fxml.equals("room")&&room!=null){
+    if (fxml.equals("room") && room != null) {
       scene.setRoot(room);
       return;
+    } else if (fxml.equals("chat") && chat != null){
+      scene.setRoot(chat);
+      return;
     }
-    Thread sceneThread = new Thread(() -> {
-      Parent root;
-      try {
-        root = loadFxml(fxml);
-        if (fxml.equals("room")&&room == null){
-          room = root;
-        }
-        Platform.runLater(
-                        new Runnable() {
-                          @Override
-                          public void run() {
-                            scene.setRoot(root);
-                          }
-                        });
-      } catch (IOException e) {
-        e.printStackTrace();
-        return;
-      }
-    });
+    //Uses threads to load the roots of the different views.
+    Thread sceneThread =
+        new Thread(
+            () -> {
+              Parent root;
+              try {
+                root = loadFxml(fxml);
+                //Sets the roots once loaded, so they can be called in the future.
+                if (fxml.equals("room") && room == null) {
+                  room = root;
+                } else if (fxml.equals("chat") && chat == null){
+                  chat = root;
+                }
+                Platform.runLater(
+                    new Runnable() {
+                      @Override
+                      public void run() {
+                        scene.setRoot(root);
+                      }
+                    });
+              } catch (IOException e) {
+                e.printStackTrace();
+                return;
+              }
+            });
     sceneThread.start();
   }
 
@@ -74,5 +83,4 @@ public class App extends Application {
     stage.show();
     root.requestFocus();
   }
-
 }

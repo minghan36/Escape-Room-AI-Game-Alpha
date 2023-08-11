@@ -17,14 +17,13 @@ import nz.ac.auckland.se206.gpt.openai.ChatCompletionResult;
 import nz.ac.auckland.se206.gpt.openai.ChatCompletionResult.Choice;
 
 /** Controller class for the chat view. */
-public class ChatController extends GameState{
+public class ChatController extends GameState {
   @FXML private TextArea chatTextArea;
   @FXML private TextField inputText;
   @FXML private Button sendButton;
   @FXML private Circle circleOne;
   @FXML private Circle circleTwo;
   @FXML private Circle circleThree;
-
 
   /**
    * Initializes the chat view, loading the riddle.
@@ -33,7 +32,8 @@ public class ChatController extends GameState{
    */
   @FXML
   public void initialize() throws ApiProxyException {
-    chatCompletionRequestChat = new ChatCompletionRequest().setN(1).setTemperature(1).setTopP(0.8).setMaxTokens(100);
+    chatCompletionRequestChat =
+        new ChatCompletionRequest().setN(1).setTemperature(1).setTopP(0.8).setMaxTokens(100);
     runGpt(new ChatMessage("user", GptPromptEngineering.getRiddleWithGivenWord("pillow")));
   }
 
@@ -54,14 +54,13 @@ public class ChatController extends GameState{
    * @throws ApiProxyException if there is an error communicating with the API proxy
    */
   private ChatMessage runGpt(ChatMessage msg) throws ApiProxyException {
-    setCircles(0.6);
     chatCompletionRequestChat.addMessage(msg);
     try {
       ChatCompletionResult chatCompletionResult = chatCompletionRequestChat.execute();
       Choice result = chatCompletionResult.getChoices().iterator().next();
       chatCompletionRequestChat.addMessage(result.getChatMessage());
       appendChatMessage(result.getChatMessage());
-      setCircles(0);
+      // setCircles(0);
       return result.getChatMessage();
     } catch (ApiProxyException e) {
       // TODO handle exception appropriately
@@ -83,6 +82,8 @@ public class ChatController extends GameState{
     if (message.trim().isEmpty()) {
       return;
     }
+    // setCircles(0.6);
+    System.out.println("send clicked");
     inputText.clear();
     ChatMessage msg = new ChatMessage("user", message);
     appendChatMessage(msg);
@@ -104,9 +105,9 @@ public class ChatController extends GameState{
     App.setRoot("room");
   }
 
-  private void setCircles(double arg){
+  /*private void setCircles(double arg){
     circleOne.setOpacity(arg);
     circleTwo.setOpacity(arg);
     circleThree.setOpacity(arg);
-  }
+  }*/
 }
