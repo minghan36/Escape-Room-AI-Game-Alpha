@@ -81,6 +81,7 @@ public class App extends Application {
     Parent root = loadFxml("startscreen");
     scene = new Scene(root, 600, 470);
     stage.setScene(scene);
+    stage.setResizable(false);
     stage.show();
     root.requestFocus();
   }
