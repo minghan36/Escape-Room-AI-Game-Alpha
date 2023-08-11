@@ -91,7 +91,7 @@ public class RoomController extends GameState{
   @FXML
   public void clickDoor(MouseEvent event) throws IOException {
     System.out.println("door clicked");
-
+    rectangleDoor.setDisable(true);
     if (!GameState.isRiddleResolved) {
       isGameMasterLoaded = true;
       speechBubble.setOpacity(1);
@@ -108,6 +108,8 @@ public class RoomController extends GameState{
     } else {
       showDialog("Info", "You Won!", "Good Job!");
     }
+
+    rectangleDoor.setDisable(false);
   }
 
   /**
@@ -118,6 +120,7 @@ public class RoomController extends GameState{
   @FXML
   public void clickPillow(MouseEvent event) {
     System.out.println("pillow clicked");
+    rectanglePillow.setDisable(true);
     if (GameState.isRiddleResolved && !GameState.isNoteFound) {
       showDialog("Info", "Note Found", "RGBG");
       GameState.isNoteFound = true;
@@ -128,6 +131,7 @@ public class RoomController extends GameState{
   @FXML
   public void clickWindow(MouseEvent event) {
     System.out.println("Window Clicked");
+    rectangleWindow.setDisable(true);
     if (isGameMasterLoaded){
     chatCompletionRequestWindow.addMessage(new ChatMessage("user", "With the following sentence as a guide. Aren't the stars beautiful. Acknowledge the beauty of space in at most four words."));
     ChatCompletionResult chatCompletionResult;
@@ -140,6 +144,7 @@ public class RoomController extends GameState{
       e.printStackTrace();
     }
   }
+      rectangleWindow.setDisable(false);
   }
 
   @FXML
