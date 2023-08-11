@@ -16,6 +16,11 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameState;
+import nz.ac.auckland.se206.gpt.ChatMessage;
+import nz.ac.auckland.se206.gpt.openai.ApiProxyException;
+import nz.ac.auckland.se206.gpt.openai.ChatCompletionRequest;
+import nz.ac.auckland.se206.gpt.openai.ChatCompletionResult;
+import nz.ac.auckland.se206.gpt.openai.ChatCompletionResult.Choice;
 
 /** Controller class for the room view. */
 public class RoomController extends GameState{
@@ -31,10 +36,11 @@ public class RoomController extends GameState{
   @FXML private Label labelNoteContent;
   @FXML private Label labelChat;
   @FXML private ImageView speechBubble;
-  private static Timeline timeline;
 
+  private static Timeline timeline;
   /** Initializes the room view, it is called when the room loads. */
   public void initialize() {
+
     Thread timeThread = new Thread(()-> {
       startTimer();
     });
@@ -87,6 +93,7 @@ public class RoomController extends GameState{
     System.out.println("door clicked");
 
     if (!GameState.isRiddleResolved) {
+      isGameMasterLoaded = true;
       speechBubble.setOpacity(1);
       labelChat.setText("SHIP AI LOADING...");
       App.setRoot("chat");
@@ -121,7 +128,18 @@ public class RoomController extends GameState{
   @FXML
   public void clickWindow(MouseEvent event) {
     System.out.println("Window Clicked");
-    showDialog("Info", "Window", "Isn't it beautiful!");
+    if (isGameMasterLoaded){
+    chatCompletionRequestWindow.addMessage(new ChatMessage("user", "With the following sentence as a guide. Aren't the stars beautiful. Acknowledge the beauty of space in at most four words."));
+    ChatCompletionResult chatCompletionResult;
+    try {
+      chatCompletionResult = chatCompletionRequestWindow.execute();
+      Choice result = chatCompletionResult.getChoices().iterator().next();
+      speechBubble.setOpacity(1);
+      labelChat.setText(result.getChatMessage().getContent());
+    } catch (ApiProxyException e) {
+      e.printStackTrace();
+    }
+  }
   }
 
   @FXML
@@ -174,6 +192,9 @@ public class RoomController extends GameState{
                       seconds = 59;
                     } else if (seconds > 0) {
                       seconds--;
+                    }
+                    if (isGameMasterLoaded && ((minutes*60 + seconds)%20 == 0)){
+
                     }
                     Platform.runLater(
                         new Runnable() {

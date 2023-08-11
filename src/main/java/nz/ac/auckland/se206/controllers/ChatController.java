@@ -21,7 +21,7 @@ public class ChatController extends GameState{
   @FXML private TextField inputText;
   @FXML private Button sendButton;
 
-  protected ChatCompletionRequest chatCompletionRequest;
+
 
   /**
    * Initializes the chat view, loading the riddle.
@@ -30,9 +30,8 @@ public class ChatController extends GameState{
    */
   @FXML
   public void initialize() throws ApiProxyException {
-    chatCompletionRequest =
-        new ChatCompletionRequest().setN(1).setTemperature(0.2).setTopP(0.5).setMaxTokens(100);
-    runGpt(new ChatMessage("user", GptPromptEngineering.getRiddleWithGivenWord("vase")));
+    chatCompletionRequestChat = new ChatCompletionRequest().setN(1).setTemperature(1).setTopP(0.8).setMaxTokens(100);
+    runGpt(new ChatMessage("user", GptPromptEngineering.getRiddleWithGivenWord("pillow")));
   }
 
   /**
@@ -52,11 +51,11 @@ public class ChatController extends GameState{
    * @throws ApiProxyException if there is an error communicating with the API proxy
    */
   private ChatMessage runGpt(ChatMessage msg) throws ApiProxyException {
-    chatCompletionRequest.addMessage(msg);
+    chatCompletionRequestChat.addMessage(msg);
     try {
-      ChatCompletionResult chatCompletionResult = chatCompletionRequest.execute();
+      ChatCompletionResult chatCompletionResult = chatCompletionRequestChat.execute();
       Choice result = chatCompletionResult.getChoices().iterator().next();
-      chatCompletionRequest.addMessage(result.getChatMessage());
+      chatCompletionRequestChat.addMessage(result.getChatMessage());
       appendChatMessage(result.getChatMessage());
       return result.getChatMessage();
     } catch (ApiProxyException e) {

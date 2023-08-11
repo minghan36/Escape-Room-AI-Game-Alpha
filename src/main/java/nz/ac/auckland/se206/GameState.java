@@ -1,8 +1,14 @@
 package nz.ac.auckland.se206;
 
+import nz.ac.auckland.se206.gpt.openai.ChatCompletionRequest;
+
 /** Represents the state of the game. */
 public class GameState {
 
+
+  protected static ChatCompletionRequest chatCompletionRequestChat;
+  protected static ChatCompletionRequest chatCompletionRequestWindow;
+  protected static ChatCompletionRequest chatCompletionRequestEncourage;
   /** Indicates whether the riddle has been resolved. */
   protected static boolean isRiddleResolved = false;
 
@@ -11,6 +17,8 @@ public class GameState {
 
 
   protected static boolean isGameWon = false;
+
+  protected static boolean isGameMasterLoaded = false;
 
   protected static int minutes = 2;
 
