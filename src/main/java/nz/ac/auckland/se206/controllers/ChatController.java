@@ -1,6 +1,7 @@
 package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -59,8 +60,14 @@ public class ChatController extends GameState {
       ChatCompletionResult chatCompletionResult = chatCompletionRequestChat.execute();
       Choice result = chatCompletionResult.getChoices().iterator().next();
       chatCompletionRequestChat.addMessage(result.getChatMessage());
-      appendChatMessage(result.getChatMessage());
-      // setCircles(0);
+      Platform.runLater(
+          new Runnable() {
+            @Override
+            public void run() {
+              appendChatMessage(result.getChatMessage());
+            }
+          });
+      setCircles(0);
       return result.getChatMessage();
     } catch (ApiProxyException e) {
       // TODO handle exception appropriately
@@ -82,15 +89,26 @@ public class ChatController extends GameState {
     if (message.trim().isEmpty()) {
       return;
     }
-    // setCircles(0.6);
+    setCircles(0.6);
     System.out.println("send clicked");
     inputText.clear();
     ChatMessage msg = new ChatMessage("user", message);
     appendChatMessage(msg);
-    ChatMessage lastMsg = runGpt(msg);
-    if (lastMsg.getRole().equals("assistant") && lastMsg.getContent().startsWith("Correct")) {
-      GameState.isRiddleResolved = true;
-    }
+    Thread computerThread =
+        new Thread(
+            () -> {
+              ChatMessage lastMsg;
+              try {
+                lastMsg = runGpt(msg);
+                if (lastMsg.getRole().equals("assistant")
+                    && lastMsg.getContent().startsWith("Correct")) {
+                  GameState.isRiddleResolved = true;
+                }
+              } catch (ApiProxyException e) {
+                e.printStackTrace();
+              }
+            });
+    computerThread.start();
   }
 
   /**
@@ -105,9 +123,14 @@ public class ChatController extends GameState {
     App.setRoot("room");
   }
 
-  /*private void setCircles(double arg){
+  /**
+   * Changes Opacity of circles
+   *
+   * @param arg The double value for the Opacity to be set to.
+   */
+  private void setCircles(double arg) {
     circleOne.setOpacity(arg);
     circleTwo.setOpacity(arg);
     circleThree.setOpacity(arg);
-  }*/
+  }
 }
